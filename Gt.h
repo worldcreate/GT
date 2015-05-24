@@ -8,14 +8,28 @@ using namespace std;
 
 class Gt{
 public:
-	typedef pair<int,int> JobPair;
+	class JobPair{
+	public:
+		JobPair(){
+			machine=-1;
+			time=-1;
+			checked=false;
+		}
+		int machine;
+		int time;
+		bool isCheck(){return checked;}
+		void check(){checked=true;}
+	private:
+		bool checked;
+	};
 	typedef vector<vector<JobPair> > Table;
 	typedef pair<int,bool> Time;
 	
 	Gt();
 	void setTable(Table&);
 	void execute();
-	vector<vector<Gt::Time> > getASTable();
+	vector<vector<int> > getASTable();
+	vector<vector<int> > convertAStoMatrix(const vector<vector<int> >&);
 private:
 	
 	Table mTable;
@@ -29,7 +43,7 @@ private:
 	void setNextJobpair(int,int,int);
 	void addNextIndexTable(int);
 	vector<Gt::JobPair> getFirstOrder();
-	Gt::JobPair findJobpairByMachineAndJob(int,int,int);
+	Gt::JobPair* findJobpairByMachineAndJob(int,int,int);
 	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};
 };
 
