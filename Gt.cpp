@@ -1,5 +1,4 @@
 #include <limits.h>
-#include <iostream>
 #include "Gt.h"
 
 Gt::Gt(){
@@ -23,12 +22,12 @@ void Gt::setTable(Table &table){
 /* Schedule)を作り出す							 */
 void Gt::execute(){
 	// step1
-	vector<vector<int> > firstIndex(mMachineNum,vector<int>(mJobNum,0));
+	vector<vector<Time> > firstIndex(mMachineNum,vector<Time>(mJobNum,Time(-1,false)));
 	vector<JobPair> firstJobPair=getFirstOrder();
 	for(int i=0;i<firstJobPair.size();i++){
 		JobPair jp=firstJobPair[i];
 		int m=jp.first;
-		firstIndex[m][i]=jp.second;
+		firstIndex[m][i].first=jp.second;
 	}
 	mCreateTable.push_back(firstIndex);
 	int index=0;
@@ -37,9 +36,6 @@ void Gt::execute(){
 		// step2
 		int machine=0;
 		machine=getMinTimeOverT(mCreateTable[index],&T);
-		#ifdef DEBUG
-			cout<<"machine="<<machine<<endl;
-		#endif
 		if(machine==-1)
 			break;
 		// step3
@@ -51,14 +47,6 @@ void Gt::execute(){
 		setNextJobpair(index,machine,T);
 		addNextIndexTable(index);
 		index++;
-		#ifdef DEBUG
-			for(int i=0;i<mCreateTable[index].size();i++){
-				for(int j=0;j<mCreateTable[index][0].size();j++){
-					cout<<mCreateTable[index][i][j]<<" ";
-				}
-				cout<<endl;
-			}
-		#endif
 	}
 }
 
@@ -66,19 +54,18 @@ void Gt::execute(){
 /* ASの生成テーブルを引数とし、Tよりは大きく、最小の */
 /* T'を取得する										 */
 /* 返り値としては、取得したT'のmachineを返す		 */
-int Gt::getMinTimeOverT(const vector<vector<int> > &index,int *T){
-	#ifdef DEBUG
-		cout<<"T="<<*T<<endl;
-	#endif
+int Gt::getMinTimeOverT(const vector<vector<Time> > &index,int *T){
 	int tempT=INT_MAX;
 	int machine=-1;
 	for(int m=0;m<mMachineNum;m++){
 		for(int j=0;j<mJobNum;j++){
-			if(tempT<index[m][j])
+			if(tempT<index[m][j].first)
 				continue;
-			if(*T>=index[m][j])
+			if(*T>index[m][j].first)
 				continue;
-			tempT=index[m][j];
+			if(index[m][j].second)
+				continue;
+			tempT=index[m][j].first;
 			machine=m;
 		}
 	}
@@ -91,11 +78,12 @@ int Gt::getMinTimeOverT(const vector<vector<int> > &index,int *T){
 /* machineの中がコンフリクトを起こしているかを		 */
 /* チェックする										 */
 bool Gt::checkConflict(int index,int machine,int T){
-	vector<int> jobTable=mCreateTable[index][machine];
+	vector<Time> jobTable=mCreateTable[index][machine];
 	for(int j=0;j<mJobNum;j++){
-		if(jobTable[j]<T)
+		if(jobTable[j].first<T)
 			continue;
-		if(jobTable[j]-findJobpairByMachineAndJob(machine,j,NOWJOBPAIR).second <T){
+		if(jobTable[j].first-
+			findJobpairByMachineAndJob(machine,j,NOWJOBPAIR).second <T){
 			return true;
 		}
 	}
@@ -105,13 +93,14 @@ bool Gt::checkConflict(int index,int machine,int T){
 /* fixConflict(int,int,int)							 */
 /* コンフリクトを起こしていた場合、修正する			 */
 void Gt::fixConflict(int index,int machine,int T){
-	vector<int> jobTable=mCreateTable[index][machine];
+	vector<Time> jobTable=mCreateTable[index][machine];
 	for(int j=0;j<mJobNum;j++){
-		if(jobTable[j]<T)
+		if(jobTable[j].first<T)
 			continue;
-		if(jobTable[j]-findJobpairByMachineAndJob(machine,j,NOWJOBPAIR).second>T)
+		if(jobTable[j].first-
+			findJobpairByMachineAndJob(machine,j,NOWJOBPAIR).second>T)
 			continue;
-		if(jobTable[j]==T)
+		if(jobTable[j].first==T)
 			continue;
 		JobPair prevJobPair;
 		int prevT=0;
@@ -119,14 +108,10 @@ void Gt::fixConflict(int index,int machine,int T){
 		prevJobPair=findJobpairByMachineAndJob(machine,j,PREVJOBPAIR);
 
 		if(prevJobPair.first!=-1){
-			prevT=mCreateTable[index][prevJobPair.first][j];
+			prevT=mCreateTable[index][prevJobPair.first][j].first;
 		}
-		#ifdef DEBUG
-			cout<<"jobIndex="<<j<<"machine="<<machine<<"prevT="<<prevT<<endl;
-			cout<<"prevMachine="<<prevJobPair.first<<"prevTime="<<prevJobPair.second<<endl;
-		#endif
 		TT=max(prevT,T);
-		mCreateTable[index][machine][j]=
+		mCreateTable[index][machine][j].first=
 			findJobpairByMachineAndJob(machine,j,NOWJOBPAIR).second+TT;
 	}
 }
@@ -136,25 +121,20 @@ void Gt::fixConflict(int index,int machine,int T){
 /* をASに記入する										 */
 void Gt::setNextJobpair(int index,int machine,int T){
 	int jobIndex=-1;
-	vector<int> jobTable=mCreateTable[index][machine];
+	vector<Time> jobTable=mCreateTable[index][machine];
 	for(int j=0;j<mJobNum;j++){
-		if(T!=jobTable[j])
+		if(T!=jobTable[j].first)
 			continue;
 		jobIndex=j;
 		break;
 	}
-	#ifdef DEBUG
-		cout<<"machine="<<machine<<":jobindex="<<jobIndex<<endl;
-	#endif
+	mCreateTable[index][machine][jobIndex].second=true;
 	JobPair jp=findJobpairByMachineAndJob(machine,jobIndex,NEXTJOBPAIR);
 	if(jp.first==-1)
 		return;
-	#ifdef DEBUG
-		cout<<"nextMachine="<<jp.first<<":nextTime="<<jp.second<<endl;
-	#endif
 	//int emptyTime=0;
 	int nextMachine=jp.first;
-	vector<int> nextJobTable=mCreateTable[index][nextMachine];
+	vector<Time> nextJobTable=mCreateTable[index][nextMachine];
 	/*
 	for(int j=0;j<mJobNum;j++){
 		if(emptyTime<nextJobTable[j]){
@@ -164,17 +144,14 @@ void Gt::setNextJobpair(int index,int machine,int T){
 	*/
 	//int TT=max(emptyTime,T);
 	int TT=T;
-	#ifdef DEBUG
-		cout<<"TT="<<TT<<endl;
-	#endif
-	nextJobTable[jobIndex]=TT+jp.second;
+	nextJobTable[jobIndex].first=TT+jp.second;
 	mCreateTable[index][nextMachine]=nextJobTable;
 }
 
 /* addNextIndexTable(int)								 */
 /* 次の生成テーブルを追加する							 */
 void Gt::addNextIndexTable(int index){
-	vector<vector<int> > nextIndex;
+	vector<vector<Time> > nextIndex;
 	nextIndex=mCreateTable[index];
 	mCreateTable.push_back(nextIndex);
 }
@@ -208,7 +185,7 @@ vector<Gt::JobPair> Gt::getFirstOrder(){
 
 /* getASTable()											 */
 /* ASが生成完了した際の最終的なテーブルを取得する		 */
-vector<vector<int> > Gt::getASTable(){
+vector<vector<Gt::Time> > Gt::getASTable(){
 	int index=mCreateTable.size();
 	return mCreateTable[index-1];
 }

@@ -10,18 +10,20 @@ class Gt{
 public:
 	typedef pair<int,int> JobPair;
 	typedef vector<vector<JobPair> > Table;
-
+	typedef pair<int,bool> Time;
+	
 	Gt();
 	void setTable(Table&);
 	void execute();
-	vector<vector<int> > getASTable();
+	vector<vector<Gt::Time> > getASTable();
 private:
+	
 	Table mTable;
-	vector<vector<vector<int> > > mCreateTable;
+	vector<vector<vector<Time> > > mCreateTable;
 	int mJobNum;
 	int mMachineNum;
 
-	int getMinTimeOverT(const vector<vector<int> > &,int*);
+	int getMinTimeOverT(const vector<vector<Time> > &,int*);
 	bool checkConflict(int,int,int);
 	void fixConflict(int,int,int );
 	void setNextJobpair(int,int,int);
