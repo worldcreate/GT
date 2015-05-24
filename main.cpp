@@ -1,12 +1,14 @@
 #include <iostream>
 #include "Gt.h"
+#include "Test.h"
 
 using namespace std;
 
 int main(void){
 	Test t;
+	Gt::Table table=t.getTable();
 	Gt gt;
-	gt.setTable(t.getTable());
+	gt.setTable(table);
 	gt.execute();
 	vector<vector<int> > result=gt.convertAStoMatrix(gt.getASTable());
 	for(int i=0;i<result.size();i++){
