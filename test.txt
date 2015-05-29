@@ -1,0 +1,329 @@
+./main
+machine=0
+T=2
+2 -1 -1 
+-1 4 -1 
+-1 -1 6 
+machine=1
+T=4
+2 -1 -1 
+5 4 -1 
+-1 -1 6 
+check
+conflict size =2
+r=1
+T.first=4
+machine=2
+T=6
+2 7 -1 
+7 4 -1 
+-1 -1 6 
+machine=1
+T=7
+2 7 -1 
+7 4 11 
+-1 -1 6 
+check
+conflict size =2
+r=1
+T.first=11
+machine=0
+T=7
+2 7 15 
+14 4 11 
+-1 -1 6 
+machine=2
+T=12
+2 7 15 
+14 4 11 
+-1 12 6 
+machine=1
+T=14
+2 7 15 
+14 4 11 
+-1 12 6 
+machine=0
+T=15
+2 7 15 
+14 4 11 
+18 12 6 
+machine=2
+T=18
+2 7 15 
+14 4 11 
+18 12 6 
+machine=-1
+T=2147483647
+2 7 15 
+14 4 11 
+18 12 6 
+  0	1	2	
+0:2	7	15	
+1:14	4	11	
+2:18	12	6	
+makespan=18
+machine=0
+T=2
+2 -1 -1 
+-1 4 -1 
+-1 -1 6 
+machine=1
+T=4
+2 -1 -1 
+5 4 -1 
+-1 -1 6 
+check
+conflict size =2
+r=1
+T.first=4
+machine=2
+T=6
+2 7 -1 
+7 4 -1 
+-1 -1 6 
+machine=1
+T=7
+2 7 -1 
+7 4 11 
+-1 -1 6 
+check
+conflict size =2
+r=1
+T.first=11
+machine=0
+T=7
+2 7 15 
+14 4 11 
+-1 -1 6 
+machine=2
+T=12
+2 7 15 
+14 4 11 
+-1 12 6 
+machine=1
+T=14
+2 7 15 
+14 4 11 
+-1 12 6 
+machine=0
+T=15
+2 7 15 
+14 4 11 
+18 12 6 
+machine=2
+T=18
+2 7 15 
+14 4 11 
+18 12 6 
+machine=-1
+T=2147483647
+2 7 15 
+14 4 11 
+18 12 6 
+  0	1	2	
+0:2	7	15	
+1:14	4	11	
+2:18	12	6	
+makespan=18
+machine=0
+T=2
+2 -1 -1 
+-1 4 -1 
+-1 -1 6 
+machine=1
+T=4
+2 -1 -1 
+5 4 -1 
+-1 -1 6 
+check
+conflict size =2
+r=0
+T.first=5
+machine=2
+T=6
+2 -1 -1 
+5 9 -1 
+9 -1 6 
+check
+conflict size =2
+r=0
+T.first=9
+machine=1
+T=9
+2 -1 -1 
+5 9 -1 
+9 -1 15 
+machine=0
+T=12
+2 12 -1 
+5 9 -1 
+9 -1 15 
+machine=2
+T=15
+2 12 -1 
+5 9 -1 
+9 17 15 
+check
+conflict size =2
+r=0
+T.first=17
+machine=2
+T=23
+2 12 -1 
+5 9 -1 
+9 17 23 
+machine=1
+T=28
+2 12 -1 
+5 9 28 
+9 17 23 
+machine=0
+T=32
+2 12 32 
+5 9 28 
+9 17 23 
+machine=-1
+T=2147483647
+2 12 32 
+5 9 28 
+9 17 23 
+  0	1	2	
+0:2	12	32	
+1:5	9	28	
+2:9	17	23	
+makespan=32
+machine=0
+T=2
+2 -1 -1 
+-1 4 -1 
+-1 -1 6 
+machine=1
+T=4
+2 -1 -1 
+5 4 -1 
+-1 -1 6 
+check
+conflict size =2
+r=1
+T.first=4
+machine=2
+T=6
+2 7 -1 
+7 4 -1 
+-1 -1 6 
+machine=1
+T=7
+2 7 -1 
+7 4 11 
+-1 -1 6 
+check
+conflict size =2
+r=0
+T.first=7
+machine=0
+T=7
+2 7 -1 
+7 4 12 
+11 -1 6 
+machine=2
+T=11
+2 7 -1 
+7 4 12 
+11 12 6 
+check
+conflict size =2
+r=1
+T.first=12
+machine=1
+T=12
+2 7 -1 
+7 4 12 
+16 12 6 
+machine=2
+T=16
+2 7 16 
+7 4 12 
+16 12 6 
+machine=0
+T=16
+2 7 16 
+7 4 12 
+16 12 6 
+machine=-1
+T=2147483647
+2 7 16 
+7 4 12 
+16 12 6 
+  0	1	2	
+0:2	7	16	
+1:7	4	12	
+2:16	12	6	
+makespan=16
+machine=0
+T=2
+2 -1 -1 
+-1 4 -1 
+-1 -1 6 
+machine=1
+T=4
+2 -1 -1 
+5 4 -1 
+-1 -1 6 
+check
+conflict size =2
+r=0
+T.first=5
+machine=2
+T=6
+2 -1 -1 
+5 9 -1 
+9 -1 6 
+check
+conflict size =2
+r=0
+T.first=9
+machine=1
+T=9
+2 -1 -1 
+5 9 -1 
+9 -1 15 
+machine=0
+T=12
+2 12 -1 
+5 9 -1 
+9 -1 15 
+machine=2
+T=15
+2 12 -1 
+5 9 -1 
+9 17 15 
+check
+conflict size =2
+r=1
+T.first=15
+machine=2
+T=20
+2 12 -1 
+5 9 20 
+9 20 15 
+machine=1
+T=20
+2 12 -1 
+5 9 20 
+9 20 15 
+machine=0
+T=24
+2 12 24 
+5 9 20 
+9 20 15 
+machine=-1
+T=2147483647
+2 12 24 
+5 9 20 
+9 20 15 
+  0	1	2	
+0:2	12	24	
+1:5	9	20	
+2:9	20	15	
+makespan=24
+makespanAverage=21.6

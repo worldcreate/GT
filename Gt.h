@@ -29,6 +29,7 @@ public:
 	void execute();
 	vector<vector<int> > getASTable();
 	vector<vector<int> > convertAStoMatrix(const vector<vector<int> >&);
+	int getMakespan();
 private:
 	
 	Table mTable;
@@ -36,10 +37,10 @@ private:
 	int mJobNum;
 	int mMachineNum;
 
-	int getMinTimeOverT(const vector<vector<int> > &,int*);
-	bool checkConflict(int,int,int);
-	void fixConflict(int,int,int );
-	void setNextJobpair(int,int,int);
+	int getMinTimeOverT(const vector<vector<int> > &,pair<int,int>&);
+	bool checkConflict(int,int,pair<int,int>&);
+	void fixConflict(int,int,pair<int,int>&);
+	void setNextJobpair(int,int,pair<int,int>);
 	void addNextIndexTable(int);
 	Gt::JobPair* findJobpairByMachineAndJob(int,int,int);
 	enum {PREVJOBPAIR=-1,NOWJOBPAIR,NEXTJOBPAIR};
