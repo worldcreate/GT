@@ -10,8 +10,14 @@ int main(void){
 	Gt gt;
 	gt.setTable(table);
 	gt.execute();
-	vector<vector<int> > result=gt.convertAStoMatrix(gt.getASTable());
+	vector<vector<int> > result=gt.getASTable();
+	
+	cout<<"  ";
+	for(int i=0;i<result[0].size();i++)
+		cout<<i<<"\t";
+	cout<<endl;
 	for(int i=0;i<result.size();i++){
+		cout<<i<<":";
 		for(int j=0;j<result[0].size();j++){
 			cout<<result[i][j]<<"\t";
 		}
