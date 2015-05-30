@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "Test.h"
 
-#define INPUTFILE "sample.txt"
+#define INPUTFILE "sample3.txt"
 
 
 using namespace std;
